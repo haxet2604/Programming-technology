@@ -7,7 +7,7 @@ using namespace std;
 
 class User
 {
-private:
+protected:
     string first_name;
     string surname;
     string last_name;
@@ -15,6 +15,10 @@ private:
 public:
     User(string first_name, string surname, string last_name);
     ~User();
+
+    virtual string getFirstName() const = 0;
+    virtual string getSurname() const = 0;
+    virtual string getLastName() const = 0;
 };
 
 #endif
