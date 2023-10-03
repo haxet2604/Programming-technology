@@ -3,7 +3,12 @@
 
 Poet::Poet(string firstName, string surname, string lastName) : User(firstName, surname, lastName) {};
 
-string Poet::getFirstName() const {
+Poet::~Poet()
+{
+}
+
+string Poet::getFirstName() const
+{
     return this->first_name;
 }
 

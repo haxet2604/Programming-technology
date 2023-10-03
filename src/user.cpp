@@ -5,3 +5,7 @@ User::User(string firstName, string surname, string lastName) {
     this->surname = surname;
     this->last_name = lastName;
 };
+
+User::~User()
+{
+}
