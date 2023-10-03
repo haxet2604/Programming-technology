@@ -9,6 +9,9 @@ project (App VERSION 1.0)
 # Create a sources variable with a link to all cpp files to compile
 set(SOURCES
     src/main.cpp
+    src/poet.cpp
+    src/user.cpp
+    src/database.cpp
 )
 
 # Add an executable with the above sources
