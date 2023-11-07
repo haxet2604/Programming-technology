@@ -11,7 +11,10 @@ set(SOURCES
     src/main.cpp
     src/poet.cpp
     src/user.cpp
-    src/database.cpp
+    src/printedition.cpp
+    src/novelist.cpp
+    src/keeper.cpp
+    src/scifiwriter.cpp
 )
 
 # Add an executable with the above sources

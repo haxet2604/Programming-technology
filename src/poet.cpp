@@ -1,21 +1,24 @@
 #include "poet.h"
-#include "user.h"
+#include <iostream>
 
-Poet::Poet(string firstName, string surname, string lastName) : User(firstName, surname, lastName) {};
-
-Poet::~Poet()
-{
+Poet::Poet(const std::string& name, const std::string& years, const std::string* majorWorks, int numMajorWorks)
+    : numMajorWorks(numMajorWorks) {
+    this->name = name;
+    this->years = years;
+    this->majorWorks = new std::string[numMajorWorks];
+    for (int i = 0; i < numMajorWorks; ++i) {
+        this->majorWorks[i] = majorWorks[i];
+    }
 }
 
-string Poet::getFirstName() const
-{
-    return this->first_name;
+Poet::~Poet() {
+    delete[] majorWorks;
 }
 
-string Poet::getLastName() const {
-    return this->last_name;
-}
-
-string Poet::getSurname() const {
-    return this->surname;
+void Poet::displayInfo() const {
+    User::displayInfo();
+    std::cout << "Major Works:" << std::endl;
+    for (int i = 0; i < numMajorWorks; ++i) {
+        std::cout << " - " << majorWorks[i] << std::endl;
+    }
 }

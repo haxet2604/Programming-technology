@@ -1,26 +1,14 @@
-#include <iostream>
-#pragma once
-
 #ifndef USER_H
 #define USER_H
 
-using namespace std;
+#include <string>
 
-class User
-{
-protected:
-    string first_name;
-    string surname;
-    string last_name;
-    int id;
-
+class User {
 public:
-    User(string first_name, string surname, string last_name);
-    ~User();
-
-    virtual string getFirstName() const = 0;
-    virtual string getSurname() const = 0;
-    virtual string getLastName() const = 0;
+    std::string name;
+    std::string years;
+    virtual void displayInfo() const;
+    virtual ~User() = default;
 };
 
-#endif
+#endif // USER_H

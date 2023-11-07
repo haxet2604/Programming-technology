@@ -1,21 +1,16 @@
-#include <iostream>
-#include "user.h"
-#pragma once
-
 #ifndef POET_H
 #define POET_H
 
-using namespace std;
+#include "user.h"
 
-class Poet : public User
-{
+class Poet : public User {
 public:
-    Poet(string first_name, string surname, string last_name);
+    std::string* majorWorks;
+    int numMajorWorks;
+    Poet() : majorWorks(nullptr), numMajorWorks(0) {}  // Конструктор по умолчанию
+    Poet(const std::string& name, const std::string& years, const std::string* majorWorks, int numMajorWorks);
     ~Poet();
-
-    string getFirstName() const;
-    string getSurname() const;
-    string getLastName() const;
+    void displayInfo() const override;
 };
 
-#endif
+#endif // POET_H

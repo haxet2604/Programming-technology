@@ -1,11 +1,7 @@
 #include "user.h"
+#include <iostream>
 
-User::User(string firstName, string surname, string lastName) {
-    this->first_name = firstName;
-    this->surname = surname;
-    this->last_name = lastName;
-};
-
-User::~User()
-{
+void User::displayInfo() const {
+    std::cout << "Name: " << name << std::endl;
+    std::cout << "Years: " << years << std::endl;
 }
