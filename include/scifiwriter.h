@@ -13,7 +13,7 @@ public:
 
     SciFiWriter(const std::string& name, const std::string& years, const std::string* works, int numWorks, bool moviesAdaptation);
     ~SciFiWriter();
-    void displayInfo() const override;
+    virtual std::string getScifiwriterInfo() const;
 };
 
 #endif // SCIFIWRITER_H

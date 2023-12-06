@@ -15,10 +15,12 @@ Poet::~Poet() {
     delete[] majorWorks;
 }
 
-void Poet::displayInfo() const {
-    User::displayInfo();
-    std::cout << "Major Works:" << std::endl;
+std::string Poet::getPoetInfo() const {
+    std::string info = "Name: " + name + "\n";
+    info += "Years: " + years + "\n";
+    info += "Works:\n";
     for (int i = 0; i < numMajorWorks; ++i) {
-        std::cout << " - " << majorWorks[i] << std::endl;
+        info += "- " + this->majorWorks[i] + "\n";
     }
+    return info;
 }

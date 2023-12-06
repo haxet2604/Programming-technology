@@ -1,13 +1,7 @@
-#include "printedition.h"
+#include "PrintEdition.h"
+#include <iostream>
 
-PrintEdition::PrintEdition(const std::string& name) : name(name) {
-    poets = nullptr;
-    numPoets = 0;
-    novelists = nullptr;
-    numNovelists = 0;
-    sciFiWriters = nullptr;
-    numSciFiWriters = 0;
-}
+PrintEdition::PrintEdition(const std::string& name) : name(name), poets(nullptr), numPoets(0), novelists(nullptr), numNovelists(0), sciFiWriters(nullptr), numSciFiWriters(0) {}
 
 PrintEdition::~PrintEdition() {
     delete[] poets;
@@ -20,18 +14,10 @@ void PrintEdition::addPoet(const std::string& name, const std::string& years, co
     for (int i = 0; i < numPoets; ++i) {
         newPoets[i] = poets[i];
     }
-    if (poets != nullptr) {
-        delete[] poets;
-    }
+    newPoets[numPoets] = Poet(name, years, majorWorks, numMajorWorks);
+    delete[] poets;
     poets = newPoets;
-    poets[numPoets].name = name;
-    poets[numPoets].years = years;
-    poets[numPoets].numMajorWorks = numMajorWorks;
-    poets[numPoets].majorWorks = new std::string[numMajorWorks];
-    for (int i = 0; i < numMajorWorks; ++i) {
-        poets[numPoets].majorWorks[i] = majorWorks[i];
-    }
-    numPoets++;
+    ++numPoets;
 }
 
 void PrintEdition::addNovelist(const std::string& name, const std::string& years, const std::string* works, int numWorks, const std::string& biography) {
@@ -39,19 +25,10 @@ void PrintEdition::addNovelist(const std::string& name, const std::string& years
     for (int i = 0; i < numNovelists; ++i) {
         newNovelists[i] = novelists[i];
     }
-    if (novelists != nullptr) {
-        delete[] novelists;
-    }
+    newNovelists[numNovelists] = Novelist(name, years, works, numWorks, biography);
+    delete[] novelists;
     novelists = newNovelists;
-    novelists[numNovelists].name = name;
-    novelists[numNovelists].years = years;
-    novelists[numNovelists].numWorks = numWorks;
-    novelists[numNovelists].works = new std::string[numWorks];
-    for (int i = 0; i < numWorks; ++i) {
-        novelists[numNovelists].works[i] = works[i];
-    }
-    novelists[numNovelists].biography = biography;
-    numNovelists++;
+    ++numNovelists;
 }
 
 void PrintEdition::addSciFiWriter(const std::string& name, const std::string* works, int numWorks, bool moviesAdaptation) {
@@ -59,52 +36,90 @@ void PrintEdition::addSciFiWriter(const std::string& name, const std::string* wo
     for (int i = 0; i < numSciFiWriters; ++i) {
         newSciFiWriters[i] = sciFiWriters[i];
     }
-    if (sciFiWriters != nullptr) {
-        delete[] sciFiWriters;
-    }
-    sciFiWriters = newSciFiWriters;
-    sciFiWriters[numSciFiWriters].name = name;
-    sciFiWriters[numSciFiWriters].numWorks = numWorks;
-    sciFiWriters[numSciFiWriters].works = new std::string[numWorks];
+    newSciFiWriters[numSciFiWriters].name = name;
+    newSciFiWriters[numSciFiWriters].numWorks = numWorks;
+    newSciFiWriters[numSciFiWriters].moviesAdaptation = moviesAdaptation;
+    newSciFiWriters[numSciFiWriters].works = new std::string[numWorks];
     for (int i = 0; i < numWorks; ++i) {
-        sciFiWriters[numSciFiWriters].works[i] = works[i];
+        newSciFiWriters[numSciFiWriters].works[i] = works[i];
     }
-    sciFiWriters[numSciFiWriters].moviesAdaptation = moviesAdaptation;
-    numSciFiWriters++;
+    delete[] sciFiWriters;
+    sciFiWriters = newSciFiWriters;
+    ++numSciFiWriters;
 }
 
-// В классе PrintEdition добавьте методы удаления поэтов, романистов и фантастов
 void PrintEdition::deletePoet(int index) {
     if (index >= 0 && index < numPoets) {
-        delete[] poets[index].majorWorks;
         for (int i = index; i < numPoets - 1; ++i) {
             poets[i] = poets[i + 1];
         }
-        numPoets--;
+        --numPoets;
     }
 }
 
 void PrintEdition::deleteNovelist(int index) {
     if (index >= 0 && index < numNovelists) {
-        delete[] novelists[index].works;
         for (int i = index; i < numNovelists - 1; ++i) {
             novelists[i] = novelists[i + 1];
         }
-        numNovelists--;
+        --numNovelists;
     }
 }
 
 void PrintEdition::deleteSciFiWriter(int index) {
     if (index >= 0 && index < numSciFiWriters) {
-        delete[] sciFiWriters[index].works;
         for (int i = index; i < numSciFiWriters - 1; ++i) {
             sciFiWriters[i] = sciFiWriters[i + 1];
         }
-        numSciFiWriters--;
+        --numSciFiWriters;
     }
 }
+
+std::string PrintEdition::getPoetsInfo() const {
+    std::string info = "Poets Info:\n";
+    for (int i = 0; i < numPoets; ++i) {
+        info += "Name: " + poets[i].name + "\n";
+        info += "Years: " + poets[i].years + "\n";
+        info += "Major Works:\n";
+        for (int j = 0; j < poets[i].numMajorWorks; ++j) {
+            info += "- " + poets[i].majorWorks[j] + "\n";
+        }
+        info += "\n";
+    }
+    return info;
+}
+
+std::string PrintEdition::getNovelistInfo() const {
+    std::string info = "Novelists Info:\n";
+    for (int i = 0; i < numNovelists; ++i) {
+        info += "Name: " + novelists[i].name + "\n";
+        info += "Years: " + novelists[i].years + "\n";
+        info += "Biography: " + novelists[i].biography + "\n";
+        info += "Works:\n";
+        for (int j = 0; j < novelists[i].numWorks; ++j) {
+            info += "- " + novelists[i].works[j] + "\n";
+        }
+        info += "\n";
+    }
+    return info;
+}
+
+std::string PrintEdition::getScifiwriterInfo() const {
+    std::string info = "SciFi Writers Info:\n";
+    for (int i = 0; i < numSciFiWriters; ++i) {
+        info += "Name: " + sciFiWriters[i].name + "\n";
+        info += "Number of Works: " + std::to_string(sciFiWriters[i].numWorks) + "\n";
+        info += "Movies Adaptation: " + sciFiWriters[i].moviesAdaptation ? "Yes\n" : "No\n";
+        info += "Works:\n";
+        for (int j = 0; j < sciFiWriters[i].numWorks; ++j) {
+            info += "- " + sciFiWriters[i].works[j] + "\n";
+        }
+        info += "\n";
+    }
+    return info;
+}
+
 
 std::string PrintEdition::getName() const {
     return name;
 }
-

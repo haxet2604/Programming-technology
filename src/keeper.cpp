@@ -1,133 +1,103 @@
-#include "keeper.h"
-#include <fstream>
-#include <iostream>
+#include "Keeper.h"
 
-Keeper::Keeper()
-{
-    numEditions = 0;
-    capacity = 10;
-    database = new PrintEdition[capacity];
+Keeper::Keeper() : numPrintEditions(0) {
+    // конструктор
 }
 
-Keeper::~Keeper()
-{
-    delete[] database;
-}
-
-void Keeper::resizeDatabase()
-{
-    capacity *= 2;
-    PrintEdition *newDatabase = new PrintEdition[capacity];
-    for (int i = 0; i < numEditions; ++i)
-    {
-        newDatabase[i] = database[i];
+void Keeper::addPrintEdition(const std::string& name) {
+    if (numPrintEditions < MAX_PRINT_EDITIONS) {
+        database[numPrintEditions++] = new PrintEdition(name);
+    } else {
+        std::cout << "Database is full, cannot add more PrintEditions." << std::endl;
     }
-    delete[] database;
-    database = newDatabase;
 }
 
-void Keeper::addPrintEdition(const PrintEdition &printEdition)
-{
-    if (numEditions >= capacity)
-    {
-        resizeDatabase();
-    }
-    database[numEditions] = printEdition;
-    numEditions++;
-}
-
-void Keeper::deletePrintEdition(int index)
-{
-    if (index >= 0 && index < numEditions)
-    {
-        for (int i = index; i < numEditions - 1; ++i)
-        {
+void Keeper::deletePrintEdition(int index) {
+    if (index >= 0 && index < numPrintEditions) {
+        delete database[index];
+        for (int i = index; i < numPrintEditions - 1; ++i) {
             database[i] = database[i + 1];
         }
-        numEditions--;
+        --numPrintEditions;
+    } else {
+        std::cout << "Invalid index to delete PrintEdition." << std::endl;
+    }
+}
+
+PrintEdition* Keeper::getPrintEdition(int index) {
+    if (index >= 0 && index < numPrintEditions) {
+        return database[index];
+    }
+    return nullptr;
+}
+
+int Keeper::getDatabaseSize() const {
+    return numPrintEditions;
+}
+
+void Keeper::saveToFile(const std::string& filename) {
+    std::ofstream file(filename);
+    if (file.is_open()) {
+        for (int i = 0; i < numPrintEditions; ++i) {
+            file << database[i]->getName() << "\n";
+        }
+        std::cout << "Database saved to file: " << filename << std::endl;
+        file.close();
+    } else {
+        std::cout << "Unable to open file." << std::endl;
+    }
+}
+
+void Keeper::loadFromFile(const std::string& filename) {
+    std::ifstream file(filename);
+    if (file.is_open()) {
+        std::string name;
+        while (std::getline(file, name)) {
+            addPrintEdition(name);
+        }
+        std::cout << "Database loaded from file: " << filename << std::endl;
+        file.close();
+    } else {
+        std::cout << "Unable to open file." << std::endl;
+    }
+}
+
+void Keeper::displayDatabase() const {
+    for (int i = 0; i < numPrintEditions; ++i) {
+        std::cout << i + 1 << ". " << database[i]->getName() << std::endl;
     }
 }
 
 void Keeper::saveDatabase(const std::string& filename) const {
-    // std::ofstream outFile(filename);
-    // if (outFile.is_open()) {
-    //     for (int i = 0; i < numEditions; ++i) {
-    //         outFile << database[i].getName() << "\n";
+    std::ofstream file(filename);
+    if (file.is_open()) {
+        for (int i = 0; i < numPrintEditions; ++i) {
+            file << "Print Edition: " << database[i]->getName() << "\n";
             
-    //         Poet* poet = dynamic_cast<Poet*>(&database[i]);
-    //         Novelist* novelist = dynamic_cast<Novelist*>(&database[i]);
-    //         SciFiWriter* sciFiWriter = dynamic_cast<SciFiWriter*>(&database[i]);
-
-    //         if (poet) {
-    //             // Это поэт
-    //             outFile << "Poet\n";
-    //         } else if (novelist) {
-    //             outFile << "Novelist\n";
-    //         } else if (sciFiWriter) {
-    //             outFile << "SciFiWriter\n";
-    //         }
-
-    //     }
-    //     outFile.close();
-    // } else {
-    //     std::cerr << "Невозможно сохранить файл: " << filename << std::endl;
-    // }
+            // Saving poets' information
+            file << "Poets:\n";
+            file << database[i]->getPoetsInfo(); // Assuming getPoetsInfo returns poets' information
+            
+            // Saving novelists' information
+            file << "Novelists:\n";
+            file << database[i]->getNovelistInfo(); // Assuming getNovelistsInfo returns novelists' information
+            
+            // Saving sci-fi writers' information
+            file << "Sci-Fi Writers:\n";
+            file << database[i]->getScifiwriterInfo(); // Assuming getSciFiWritersInfo returns sci-fi writers' information
+            
+            file << "\n";
+        }
+        std::cout << "Database saved to file: " << filename << std::endl;
+        file.close();
+    } else {
+        std::cout << "Unable to open file." << std::endl;
+    }
 }
 
 
-void Keeper::loadDatabase(const std::string &filename)
-{
-    // std::ifstream inFile(filename);
-    // if (inFile.is_open())
-    // {
-    //     delete[] database;
-    //     numEditions = 0;
-    //     capacity = 10;
-    //     database = new PrintEdition[capacity];
-
-    //     std::string line;
-    //     while (std::getline(inFile, line))
-    //     {
-    //         if (line == "Poet")
-    //         {
-    //             // Это поэт, считываем данные и создаем объект Poet
-    //             std::string name, biography;
-    //             // Считываем данные из файла и создаем объект Poet
-    //             Poet poet(name, biography, /* другие параметры по желанию */);
-    //             addPrintEdition(poet);
-    //         }
-    //         else if (line == "Novelist")
-    //         {
-    //             // Это романист, считываем данные и создаем объект Novelist
-    //             std::string name, biography;
-    //             // Считываем данные из файла и создаем объект Novelist
-    //             Novelist novelist(name, biography, /* другие параметры по желанию */);
-    //             addPrintEdition(novelist);
-    //         }
-    //         else if (line == "SciFiWriter")
-    //         {
-    //             // Это фантаст, считываем данные и создаем объект SciFiWriter
-    //             std::string name, biography;
-    //             // Считываем данные из файла и создаем объект SciFiWriter
-    //             SciFiWriter sciFiWriter(name, biography, /* другие параметры по желанию */);
-    //             addPrintEdition(sciFiWriter);
-    //         }
-    //     }
-    //     inFile.close();
-    // }
-    // else
-    // {
-    //     std::cerr << "Невозможно загрузить файл: " << filename << std::endl;
-    // }
-}
-
-void Keeper::displayDatabase() const
-{
-    for (int i = 0; i < numEditions; ++i)
-    {
-        std::cout << "Печатное издание #" << i + 1 << std::endl;
-        std::cout << "Имя: " << database[i].getName() << std::endl;
-        // Выводите остальные данные печатного издания в зависимости от его типа (поэт, романист или фантаст)
-        std::cout << std::endl;
+Keeper::~Keeper() {
+    for (int i = 0; i < numPrintEditions; ++i) {
+        delete database[i];
     }
 }

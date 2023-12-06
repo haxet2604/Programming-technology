@@ -1,25 +1,36 @@
 #ifndef KEEPER_H
 #define KEEPER_H
 
-#include "printedition.h"
+#include <iostream>
+#include <fstream>
+#include "PrintEdition.h"
 
 class Keeper {
+private:
+    static const int MAX_PRINT_EDITIONS = 100;
+    PrintEdition* database[MAX_PRINT_EDITIONS];
+    int numPrintEditions;
+
 public:
     Keeper();
-    ~Keeper();
 
-    void addPrintEdition(const PrintEdition& printEdition);
+    void addPrintEdition(const std::string& name);
+
     void deletePrintEdition(int index);
-    void saveDatabase(const std::string& filename) const;
-    void loadDatabase(const std::string& filename);
+
+    PrintEdition* getPrintEdition(int index);
+
+    int getDatabaseSize() const;
+
+    void saveToFile(const std::string& filename);
+
+    void loadFromFile(const std::string& filename);
+
     void displayDatabase() const;
 
-private:
-    PrintEdition* database;
-    int numEditions;
-    int capacity;
+    void saveDatabase(const std::string& filename) const;
 
-    void resizeDatabase();
+    ~Keeper();
 };
 
 #endif // KEEPER_H

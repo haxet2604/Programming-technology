@@ -15,11 +15,12 @@ SciFiWriter::~SciFiWriter() {
     delete[] works;
 }
 
-void SciFiWriter::displayInfo() const {
-    User::displayInfo();
-    std::cout << "Works:" << std::endl;
-    for (int i = 0; i < numWorks; ++i) {
-        std::cout << " - " << works[i] << std::endl;
+std::string SciFiWriter::getScifiwriterInfo() const {
+    std::string info = "Name: " + name + "\n";
+    info += "Years: " + years + "\n";
+    info += "Works:\n";
+    for (int i = 0; i < this->numWorks; ++i) {
+        info += "- " + this->works[i] + "\n";
     }
-    std::cout << "Movies Adaptation: " << (moviesAdaptation ? "Yes" : "No") << std::endl;
+    return info;
 }

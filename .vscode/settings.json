@@ -66,5 +66,8 @@
         "compare": "cpp",
         "concepts": "cpp",
         "algorithm": "cpp"
-    }
+    },
+    "conventionalCommits.scopes": [
+        "database"
+    ]
 }

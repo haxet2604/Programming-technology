@@ -15,11 +15,13 @@ Novelist::~Novelist() {
     delete[] works;
 }
 
-void Novelist::displayInfo() const {
-    User::displayInfo();
-    std::cout << "Works:" << std::endl;
+std::string Novelist::getNovelistsInfo() const {
+    std::string info = "Name: " + name + "\n";
+    info += "Years: " + years + "\n";
+    info += "Biography: " + biography + "\n";
+    info += "Works:\n";
     for (int i = 0; i < numWorks; ++i) {
-        std::cout << " - " << works[i] << std::endl;
+        info += "- " + works[i] + "\n";
     }
-    std::cout << "Biography: " << biography << std::endl;
+    return info;
 }

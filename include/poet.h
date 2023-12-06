@@ -10,7 +10,8 @@ public:
     Poet() : majorWorks(nullptr), numMajorWorks(0) {}  // Конструктор по умолчанию
     Poet(const std::string& name, const std::string& years, const std::string* majorWorks, int numMajorWorks);
     ~Poet();
-    void displayInfo() const override;
+    virtual std::string getPoetInfo() const;
+
 };
 
 #endif // POET_H

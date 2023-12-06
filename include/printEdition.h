@@ -2,15 +2,15 @@
 #define PRINTEDITION_H
 
 #include <string>
-#include "poet.h"
-#include "novelist.h"
-#include "scifiwriter.h"
+#include "Poet.h"
+#include "Novelist.h"
+#include "SciFiWriter.h"
 
 class PrintEdition {
 public:
-    PrintEdition() {}
     PrintEdition(const std::string& name);
     ~PrintEdition();
+
     void addPoet(const std::string& name, const std::string& years, const std::string* majorWorks, int numMajorWorks);
     void addNovelist(const std::string& name, const std::string& years, const std::string* works, int numWorks, const std::string& biography);
     void addSciFiWriter(const std::string& name, const std::string* works, int numWorks, bool moviesAdaptation);
@@ -19,7 +19,12 @@ public:
     void deleteNovelist(int index);
     void deleteSciFiWriter(int index);
 
-    std::string getName() const; 
+    std::string getPoetsInfo() const;
+    std::string getNovelistInfo() const;
+    std::string getScifiwriterInfo() const;
+
+    std::string getName() const;
+
 private:
     Poet* poets;
     int numPoets;

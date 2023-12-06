@@ -12,7 +12,7 @@ public:
     Novelist() : works(nullptr), numWorks(0) {}  // Конструктор по умолчанию
     Novelist(const std::string& name, const std::string& years, const std::string* works, int numWorks, const std::string& biography);
     ~Novelist();
-    void displayInfo() const override;
+    virtual std::string getNovelistsInfo() const;
 };
 
 #endif // NOVELIST_H
